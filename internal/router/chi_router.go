@@ -19,7 +19,20 @@ type chiRouter struct {
 	handler handlers
 }
 
-func NewChiRouter(ah core.IAuthHttpHandler, uh core.IUserHttpHandler) IHttpRouter {
+func NewChiRouter(hs []any) IHttpRouter {
+	var ah core.IAuthHttpHandler
+	var uh core.IUserHttpHandler
+	// making sure to assign proper handlers by checking type of them
+	for _, h := range hs {
+		a, okAuth := h.(core.IAuthHttpHandler) 
+		u, okUser := h.(core.IUserHttpHandler) 
+		if okAuth {
+			ah = a
+		}
+		if okUser {
+			uh = u
+		}
+	}
 	return &chiRouter{
 		router:  chi.NewRouter(),
 		handler: handlers{

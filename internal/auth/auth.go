@@ -17,7 +17,6 @@ func NewAuthService(us user.IUserService) IAuthService {
 	}
 }
 
-
 func(as *authService) VerifyJWT(token string) bool {
 	return token == "abcd"
 }

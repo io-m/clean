@@ -21,12 +21,19 @@ func AppSetup(port int) *appSetup {
 
 func(app *appSetup) GogoBaby() {
 
+	/* Repositories */
 	userRepository := db.NewInMemoryUserRepository()
-	userService := user.NewUserService(userRepository)
-	userHandler := user.NewUserHandler((userService))
-	authService := auth.NewAuthService(userService)
-	authHandler := auth.NewAuthHandler(authService)
-	chiRouter:= router.NewChiRouter(authHandler, userHandler)
 
+	/* Services */
+	userService := user.NewUserService(userRepository)
+	authService := auth.NewAuthService(userService)
+	
+	/* Handlers */
+	userHandler := user.NewUserHandler((userService))
+	authHandler := auth.NewAuthHandler(authService)
+	handlers := []any{authHandler, userHandler}
+	/* Router */
+	chiRouter := router.NewChiRouter(handlers)
+	
 	chiRouter.Handle(fmt.Sprintf(":%d", app.port))
 }
