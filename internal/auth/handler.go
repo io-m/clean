@@ -10,15 +10,23 @@ import (
 	"github.com/io-m/clean/internal/core"
 )
 
+func (h *authHandler) HandleRoutes() {
+	h.mux.Route("/auth", func(r chi.Router) {
+		r.Get("/{token}", h.Verify)
+	})
+}
+
 // TODO: Make readJSON, writeJSON, writeErrorJSON methods
 
 type authHandler struct {
 	authService IAuthService
+	mux         *chi.Mux
 }
 
-func NewAuthHandler(as IAuthService) core.IAuthHttpHandler {
+func NewAuthHandler(mux *chi.Mux, as IAuthService) core.IHandleRoutes {
 	return &authHandler{
 		authService: as,
+		mux:         mux,
 	}
 }
 

@@ -15,11 +15,19 @@ import (
 
 type userHandler struct {
 	userService IUserService
+	mux         *chi.Mux
 }
 
-func NewUserHandler(us IUserService) core.IUserHttpHandler {
+func (h *userHandler) HandleRoutes() {
+	h.mux.Route("/user", func(r chi.Router) {
+		r.Get("/{id}", h.FindOne)
+	})
+}
+
+func NewUserHandler(mux *chi.Mux, us IUserService) core.IHandleRoutes {
 	return &userHandler{
 		userService: us,
+		mux:         mux,
 	}
 }
 

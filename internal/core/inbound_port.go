@@ -2,7 +2,9 @@ package core
 
 import "net/http"
 
-
+type IHandleRoutes interface {
+	HandleRoutes()
+}
 type IUserHttpHandler interface {
 	FindOne(http.ResponseWriter, *http.Request)
 	// FetchMany(http.ResponseWriter, *http.Request)
