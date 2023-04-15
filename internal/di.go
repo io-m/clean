@@ -3,10 +3,10 @@ package di
 import (
 	"fmt"
 
-	http_handlers "github.com/io-m/clean/internal/user/handlers/http"
-	"github.com/io-m/clean/internal/user/repository"
-	"github.com/io-m/clean/internal/user/router"
-	user "github.com/io-m/clean/internal/user/services"
+	"github.com/io-m/clean/internal/auth"
+	"github.com/io-m/clean/internal/db"
+	"github.com/io-m/clean/internal/router"
+	"github.com/io-m/clean/internal/user"
 )
 
 type appSetup struct {
@@ -20,10 +20,13 @@ func AppSetup(port int) *appSetup {
 }
 
 func(app *appSetup) GogoBaby() {
-	userRepository := repository.NewInMemoryUserRepository()
+
+	userRepository := db.NewInMemoryUserRepository()
 	userService := user.NewUserService(userRepository)
-	chiHandler := http_handlers.NewChiHandler(userService)
-	chiRouter := router.NewChiRouter(chiHandler)
-	
+	userHandler := user.NewUserHandler((userService))
+	authService := auth.NewAuthService(userService)
+	authHandler := auth.NewAuthHandler(authService)
+	chiRouter:= router.NewChiRouter(authHandler, userHandler)
+
 	chiRouter.Handle(fmt.Sprintf(":%d", app.port))
 }

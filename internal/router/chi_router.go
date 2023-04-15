@@ -5,18 +5,27 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/io-m/clean/internal/user/core"
+	"github.com/io-m/clean/internal/core"
 )
+
+type handlers struct{
+	authHandler core.IAuthHttpHandler
+	userHandler core.IUserHttpHandler
+}
+
 
 type chiRouter struct {
 	router  chi.Router
-	handler core.IHttpHandler
+	handler handlers
 }
 
-func NewChiRouter(h core.IHttpHandler) IHttpRouter {
+func NewChiRouter(ah core.IAuthHttpHandler, uh core.IUserHttpHandler) IHttpRouter {
 	return &chiRouter{
 		router:  chi.NewRouter(),
-		handler: h,
+		handler: handlers{
+			authHandler: ah,
+			userHandler: uh,
+		},
 	}
 }
 
@@ -32,9 +41,9 @@ func (c *chiRouter) Handle(port string) {
 func (c *chiRouter) handleRoutes() {
 	c.router.Route("/user", func(r chi.Router) {
 		// r.Get("/", c.handler.FindOne)
-		r.Get("/{id}", c.handler.FindOne)
+		r.Get("/{id}", c.handler.userHandler.FindOne)
 	})
 	c.router.Route("/auth", func(r chi.Router) {
-		// r.Get("/login", c.handler.FindOne)
+		r.Get("/{token}", c.handler.authHandler.Verify)
 	})
 }

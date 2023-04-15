@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/io-m/clean/internal/user/core"
+	"github.com/io-m/clean/internal/core"
 	"github.com/io-m/clean/pkg/utils"
 )
 

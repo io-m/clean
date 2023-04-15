@@ -1,4 +1,4 @@
-package http_handlers
+package user
 
 import (
 	"encoding/json"
@@ -7,28 +7,27 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/io-m/clean/internal/user/core"
 
-	user "github.com/io-m/clean/internal/user/services"
+	"github.com/io-m/clean/internal/core"
 )
 
 // TODO: Make readJSON, writeJSON, writeErrorJSON methods
 
-type chiHandler struct {
-	userService user.IUserService
+type userHandler struct {
+	userService IUserService
 }
 
-func NewChiHandler(us user.IUserService) core.IHttpHandler {
-	return &chiHandler{
+func NewUserHandler(us IUserService) core.IUserHttpHandler {
+	return &userHandler{
 		userService: us,
 	}
 }
 
-func (ch *chiHandler) FindOne(w http.ResponseWriter, r *http.Request) {
+func (uh *userHandler) FindOne(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	id := uuid.MustParse(chi.URLParam(r, "id"))
 	fmt.Println("ID --> ", id)
-	user, err := ch.userService.FindOne(id)
+	user, err := uh.userService.FindOne(id)
 	if err != nil {
 		// w.WriteHeader(http.StatusNotFound)
 		http.Error(w, fmt.Errorf("find user handler: %w", err).Error(), http.StatusNotFound)

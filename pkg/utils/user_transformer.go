@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/io-m/clean/internal/user/core"
+	"github.com/io-m/clean/internal/core"
 )
 
 func ToUserFromUserRequest(u *core.UserRequest) *core.User {
