@@ -9,28 +9,29 @@ import (
 )
 
 type chiRouter struct {
-	router  *chi.Mux
+	router  chi.Router
 	handler core.IHttpHandler
 }
 
 func NewChiRouter(h core.IHttpHandler) core.IHttpRouter {
 	return &chiRouter{
-		router:  chi.NewMux(),
+		router:  chi.NewRouter(),
 		handler: h,
 	}
 }
 
-func (cr *chiRouter) Serve(port string) error {
+func (c *chiRouter) Handle(port string) error {
 	log.Printf("Server is listening on port 127.0.0%s \n", port)
-	return http.ListenAndServe(port, cr.router)
+	go c.handleRoutes()
+	return http.ListenAndServe(port, c.router)
 }
 
-func (cr *chiRouter) HandleRoutes() {
-	cr.router.Route("/user", func(r chi.Router) {
-		r.Get("/", cr.handler.FindOne)
-		r.Get("/{id}", cr.handler.FindOne)
+func (c *chiRouter) handleRoutes() {
+	c.router.Route("/user", func(r chi.Router) {
+		r.Get("/", c.handler.FindOne)
+		r.Get("/{id}", c.handler.FindOne)
 	})
-	cr.router.Route("/auth", func(r chi.Router) {
-		r.Get("/login", cr.handler.FindOne)
+	c.router.Route("/auth", func(r chi.Router) {
+		r.Get("/login", c.handler.FindOne)
 	})
 }

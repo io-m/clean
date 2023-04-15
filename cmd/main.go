@@ -14,8 +14,8 @@ func main() {
 	userService := service.NewUserService(userRepository)
 	chiHandler := http_handlers.NewChiHandler(userService)
 	chiRouter := user.NewChiRouter(chiHandler)
-	chiRouter.HandleRoutes()
-	if err := chiRouter.Serve(":9090"); err != nil {
+
+	if err := chiRouter.Handle(":9090"); err != nil {
 		log.Fatal("Server failed to start listening")
 	}
 }

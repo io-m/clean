@@ -15,13 +15,11 @@ import (
 // TODO: Make readJSON, writeJSON, writeErrorJSON methods
 
 type chiHandler struct {
-	chiCtx      chi.Context
 	userService user.IUserService
 }
 
 func NewChiHandler(us user.IUserService) core.IHttpHandler {
 	return &chiHandler{
-		chiCtx:      *chi.NewRouteContext(),
 		userService: us,
 	}
 }

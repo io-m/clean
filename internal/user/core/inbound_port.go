@@ -11,11 +11,5 @@ type IHttpHandler interface {
 }
 
 type IHttpRouter interface {
-	Serve(string) error
-	HandleRoutes()
-	// MethodGet(string, func(w http.ResponseWriter, r *http.Request))
-	// FetchMany(string, http.ResponseWriter, *http.Request)
-	// Update(string, http.ResponseWriter, *http.Request)
-	// Create(string, http.ResponseWriter, *http.Request)
-	// Delete(string, http.ResponseWriter, *http.Request)
+	Handle(string) error
 }
