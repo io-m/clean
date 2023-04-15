@@ -1,4 +1,4 @@
-package user
+package router
 
 import (
 	"log"
@@ -13,25 +13,28 @@ type chiRouter struct {
 	handler core.IHttpHandler
 }
 
-func NewChiRouter(h core.IHttpHandler) core.IHttpRouter {
+func NewChiRouter(h core.IHttpHandler) IHttpRouter {
 	return &chiRouter{
 		router:  chi.NewRouter(),
 		handler: h,
 	}
 }
 
-func (c *chiRouter) Handle(port string) error {
+func (c *chiRouter) Handle(port string) {
 	log.Printf("Server is listening on port 127.0.0%s \n", port)
 	go c.handleRoutes()
-	return http.ListenAndServe(port, c.router)
+	if err := http.ListenAndServe(port, c.router); err != nil {
+		log.Fatal("Server is down")
+		// gracefully shut down the server
+	}
 }
 
 func (c *chiRouter) handleRoutes() {
 	c.router.Route("/user", func(r chi.Router) {
-		r.Get("/", c.handler.FindOne)
+		// r.Get("/", c.handler.FindOne)
 		r.Get("/{id}", c.handler.FindOne)
 	})
 	c.router.Route("/auth", func(r chi.Router) {
-		r.Get("/login", c.handler.FindOne)
+		// r.Get("/login", c.handler.FindOne)
 	})
 }

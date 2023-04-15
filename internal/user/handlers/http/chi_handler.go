@@ -27,6 +27,7 @@ func NewChiHandler(us user.IUserService) core.IHttpHandler {
 func (ch *chiHandler) FindOne(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	id := uuid.MustParse(chi.URLParam(r, "id"))
+	fmt.Println("ID --> ", id)
 	user, err := ch.userService.FindOne(id)
 	if err != nil {
 		// w.WriteHeader(http.StatusNotFound)

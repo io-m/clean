@@ -9,7 +9,3 @@ type IHttpHandler interface {
 	// Create(http.ResponseWriter, *http.Request)
 	// Delete(http.ResponseWriter, *http.Request)
 }
-
-type IHttpRouter interface {
-	Handle(string) error
-}
