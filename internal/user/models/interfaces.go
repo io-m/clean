@@ -21,3 +21,11 @@ type IUserHttpHandler interface {
 	// Create(http.ResponseWriter, *http.Request)
 	// Delete(http.ResponseWriter, *http.Request)
 }
+
+type IUserService interface {
+	FindOne(uuid.UUID) (*UserResponse, error)
+	FetchMany() ([]*UserResponse, error)
+	Update(*UserRequest) (*UserResponse, error)
+	Create(*UserRequest) (*UserResponse, error)
+	Delete(uuid.UUID) error
+}

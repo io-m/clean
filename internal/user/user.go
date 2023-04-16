@@ -8,19 +8,11 @@ import (
 	"github.com/io-m/clean/pkg/utils"
 )
 
-type IUserService interface {
-	FindOne(uuid.UUID) (*models.UserResponse, error)
-	FetchMany() ([]*models.UserResponse, error)
-	Update(*models.UserRequest) (*models.UserResponse, error)
-	Create(*models.UserRequest) (*models.UserResponse, error)
-	Delete(uuid.UUID) error
-}
-
 type userService struct {
 	userRepository models.IUserRepository
 }
 
-func NewUserService(ur models.IUserRepository) IUserService {
+func NewUserService(ur models.IUserRepository) models.IUserService {
 	return &userService{
 		userRepository: ur,
 	}
