@@ -1,4 +1,4 @@
-package user
+package handlers
 
 import (
 	"encoding/json"
@@ -9,12 +9,13 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/io-m/clean/internal/core"
+	"github.com/io-m/clean/internal/user"
 )
 
 // TODO: Make readJSON, writeJSON, writeErrorJSON methods
 
 type userHandler struct {
-	userService IUserService
+	userService user.IUserService
 	mux         *chi.Mux
 }
 
@@ -24,7 +25,7 @@ func (h *userHandler) HandleRoutes() {
 	})
 }
 
-func NewUserHandler(mux *chi.Mux, us IUserService) core.IHandleRoutes {
+func NewUserHandler(mux *chi.Mux, us user.IUserService) core.IHandleRoutes {
 	return &userHandler{
 		userService: us,
 		mux:         mux,

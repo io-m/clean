@@ -5,12 +5,13 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/io-m/clean/internal/core"
+	"github.com/io-m/clean/internal/user/models"
 	"github.com/io-m/clean/pkg/utils"
 )
 
-var inMemoryStorage []*core.UserDAO = []*core.UserDAO{
+var inMemoryStorage []*models.UserDAO = []*models.UserDAO{
 	{
-		User: &core.User{
+		User: &models.User{
 			Id:       uuid.MustParse("2344d631-750b-4552-a720-484100d5f3b2"),
 			Email:    "miljak.josip@outlook.com",
 			Password: "123456",
@@ -18,7 +19,7 @@ var inMemoryStorage []*core.UserDAO = []*core.UserDAO{
 		CreatedAt: time.Now(),
 	},
 	{
-		User: &core.User{
+		User: &models.User{
 			Id:       uuid.MustParse("2344d631-750b-4552-a720-484100d5f3b1"),
 			Email:    "miljak.martina@outlook.com",
 			Password: "654321",
@@ -29,11 +30,11 @@ var inMemoryStorage []*core.UserDAO = []*core.UserDAO{
 
 type inMemoryUserRepository struct{}
 
-func NewInMemoryUserRepository() core.IUserRepository {
+func NewInMemoryUserRepository() models.IUserRepository {
 	return &inMemoryUserRepository{}
 }
 
-func (*inMemoryUserRepository) FindOne(id uuid.UUID) (*core.UserDAO, error) {
+func (*inMemoryUserRepository) FindOne(id uuid.UUID) (*models.UserDAO, error) {
 	for _, ud := range inMemoryStorage {
 		if id == uuid.MustParse("2344d631-750b-4552-a720-484100d5f3b1") {
 			return ud, nil
@@ -42,11 +43,11 @@ func (*inMemoryUserRepository) FindOne(id uuid.UUID) (*core.UserDAO, error) {
 	return nil, core.ErrorUserNotFound
 }
 
-func (*inMemoryUserRepository) FetchMany() ([]*core.UserDAO, error) {
+func (*inMemoryUserRepository) FetchMany() ([]*models.UserDAO, error) {
 	return inMemoryStorage, nil
 }
 
-func (*inMemoryUserRepository) Update(user *core.User) (*core.UserDAO, error) {
+func (*inMemoryUserRepository) Update(user *models.User) (*models.UserDAO, error) {
 	for _, ud := range inMemoryStorage {
 		if user.Id == ud.Id {
 			ud.User.Email = user.Email
@@ -59,7 +60,7 @@ func (*inMemoryUserRepository) Update(user *core.User) (*core.UserDAO, error) {
 	return nil, core.ErrorInternal
 }
 
-func (*inMemoryUserRepository) Create(user *core.User) (*core.UserDAO, error) {
+func (*inMemoryUserRepository) Create(user *models.User) (*models.UserDAO, error) {
 	ud := utils.ToUserDaoFromUser(user)
 	_ = append(inMemoryStorage, ud)
 	return ud, nil

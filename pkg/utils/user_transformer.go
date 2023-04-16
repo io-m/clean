@@ -4,11 +4,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/io-m/clean/internal/core"
+	"github.com/io-m/clean/internal/user/models"
 )
 
-func ToUserFromUserRequest(u *core.UserRequest) *core.User {
-	user := core.User{
+func ToUserFromUserRequest(u *models.UserRequest) *models.User {
+	user := models.User{
 		Id:       uuid.New(),
 		Email:    u.Email,
 		Password: u.Password,
@@ -16,8 +16,8 @@ func ToUserFromUserRequest(u *core.UserRequest) *core.User {
 	return &user
 }
 
-func ToUserDaoFromUser(u *core.User) *core.UserDAO {
-	ud := core.UserDAO{
+func ToUserDaoFromUser(u *models.User) *models.UserDAO {
+	ud := models.UserDAO{
 		User:           u,
 		HashedPassword: "need to have hashing function",
 		CreatedAt:      time.Now(),
@@ -25,8 +25,8 @@ func ToUserDaoFromUser(u *core.User) *core.UserDAO {
 	return &ud
 }
 
-func ToUserResponseFromUserDao(ud *core.UserDAO) *core.UserResponse {
-	ur := core.UserResponse{
+func ToUserResponseFromUserDao(ud *models.UserDAO) *models.UserResponse {
+	ur := models.UserResponse{
 		User:      ud.User,
 		CreatedAt: ud.CreatedAt,
 		UpdatedAt: ud.UpdatedAt,

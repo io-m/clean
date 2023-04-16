@@ -7,8 +7,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/io-m/clean/internal/auth"
-	"github.com/io-m/clean/internal/db"
 	"github.com/io-m/clean/internal/user"
+	"github.com/io-m/clean/internal/user/db"
+	"github.com/io-m/clean/internal/user/handlers"
 )
 
 type appSetup struct {
@@ -32,7 +33,7 @@ func (app *appSetup) GogoBaby() {
 	authService := auth.NewAuthService(userService)
 
 	/* Routes & Handlers */
-	go user.NewUserHandler(app.mux, userService).HandleRoutes()
+	go handlers.NewUserHandler(app.mux, userService).HandleRoutes()
 	go auth.NewAuthHandler(app.mux, authService).HandleRoutes()
 
 	/* Server listening */
